@@ -47,7 +47,38 @@ for key, default in [
 @st.cache_data(show_spinner=False)
 def _load_dataset():
     return ds.load_dataset()
+class MongoDBStore:
+    def __init__(self):
+        uri = _get_secret("MONGODB_URI")
+        db_name = _get_secret("MONGODB_DATABASE", "musync")
 
+        if not uri:
+            raise RuntimeError(
+                "MONGODB_URI is missing. Add MONGODB_URI and "
+                "MONGODB_DATABASE in Streamlit Secrets."
+            )
+
+        self.client = MongoClient(
+            uri,
+            tls=True,
+            serverSelectionTimeoutMS=20000,
+            connectTimeoutMS=20000,
+            socketTimeoutMS=30000,
+            retryWrites=True,
+        )
+
+        self.client.admin.command("ping")
+        self.mongo_db = self.client[db_name]
+
+        self.login_history = self.mongo_db["login_history"]
+        self.profiles = self.mongo_db["user_profiles"]
+        self.physiological_measurements = self.mongo_db["physiological_measurements"]
+        self.qtables = self.mongo_db["qtables"]
+        self.recommendation_feedback = self.mongo_db["recommendation_feedback"]
+        self.experiments = self.mongo_db["experiments"]
+        self.bias_assessments = self.mongo_db["bias_assessments"]
+
+        self.mode = "mongodb"
 
 @st.cache_resource(show_spinner=False)
 def _load_models():
