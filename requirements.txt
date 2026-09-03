@@ -1,0 +1,13 @@
+streamlit
+torch
+pandas
+numpy
+scikit-learn
+openpyxl
+pymongo
+dnspython
+sib-api-v3-sdk
+matplotlib
+google-genai
+plotly
+requests
