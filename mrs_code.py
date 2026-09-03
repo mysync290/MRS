@@ -410,7 +410,7 @@ if page == "Dashboard":
 
     if mongodb_error:
         st.error(
-            "MongoDB is not connected. Check MONGO_URI in Streamlit Secrets "
+            "MongoDB is not connected. Check MONGODB_URI in Streamlit Secrets "
             "and restart the app."
         )
         st.code(mongodb_error)
@@ -494,7 +494,7 @@ if page == "Dashboard":
 # Everything below requires sign-in
 # ================================================================
 elif not db:
-    st.error("MongoDB connection is required. Configure MONGO_URI in Streamlit Secrets.")
+    st.error("MongoDB connection is required. Configure MONGODB_URI in Streamlit Secrets.")
 elif not st.session_state.verified:
     st.warning("Please sign in on the Dashboard page first.")
 
