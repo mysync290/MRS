@@ -81,13 +81,16 @@ class MongoDBStore:
                 "MONGODB_DATABASE in Streamlit Secrets."
             )
 
-        self.client = MongoClient(
+            self.client = MongoClient(
             uri,
-            serverSelectionTimeoutMS=10000,
-            connectTimeoutMS=10000,
-            socketTimeoutMS=20000,
+            tls=True,
+            tlsAllowInvalidCertificates=False,
+            serverSelectionTimeoutMS=20000,
+            connectTimeoutMS=20000,
+            socketTimeoutMS=30000,
             retryWrites=True,
         )
+
         self.client.admin.command("ping")
         self.mongo_db = self.client[db_name]
 
